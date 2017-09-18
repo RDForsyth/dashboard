@@ -1,0 +1,125 @@
+{% extends 'bdashboard/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<h3>
+    <span class="fa fa-bar-chart"></span> Dashboard
+</h3>
+
+<div class = "container">
+    <div class = "row">
+        <div id="db1" class = "col-sm-12 col-md-9 col-lg-12" style= "height:400px;">
+          <h1>Dashboard #1</h1>
+        </div>
+    </div>
+</div>
+
+<div class = "container">
+  <div class="panel panel-primary actions">
+                    <div class="panel-heading">Filter</div><a name="filter"></a>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                              <form method="get">
+                                <div class="well">
+
+                                  <div class="row">
+                                    <div class="form-group col-sm-4 col-md-3">
+                                      {{ filter.form.title.label_tag }}
+                                      {% render_field filter.form.title class="form-control" %}
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                      {{ filter.form.cost.label_tag }}
+                                      {% render_field filter.form.cost class="form-control" %}
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                      {{ filter.form.department.label_tag }}
+                                      {% render_field filter.form.department class="form-control" %}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                  <button type="submit" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-search"></span> Search
+                                  </button>
+
+
+                              </form>
+                            </div>
+                          </div>
+                       </div>
+          </div>
+</div>
+<div class = "container">
+
+  <table class="table table-bordered" >
+    <thead>
+      <tr>
+        <th class= "text-center">Title</th>
+        <th class= "text-center">Department</th>
+        <th class= "text-center">Description</th>
+        <th class= "text-center">Cost</th>
+        <th class= "text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for job in filter.qs %}
+        <tr>
+          <td class= "text-center">{{ job.title }}</td>
+          <td class= "text-center">{{ job.department}}</td>
+          <td>{{ job.text}}</td>
+          <td class= "text-center">{{ job.cost }}</td>
+          <td class= "text-center"><a class="btn btn-default" href="{% url 'job_edit' pk=job.pk %}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+</div>
+  {% endblock %}
+
+  {% block suppjs %}
+
+  <script>
+  $(document).ready(function() {
+  var jsonUrl = 'api/get_chart/'
+
+  var allJobOptions = {
+      credits: {
+          enabled: false
+      },
+      chart: {
+          renderTo: 'db1',
+          type: 'column',
+
+      },
+      legend: {enabled: false},
+      title: {text: "COST OF JOBS"},
+      xAxis: {labels: {rotation: -45}},
+      yAxis: {title: {text: "cost($)"}},
+      series: [{}],
+  };
+  function loadAllJobs(path){
+      $.getJSON(path,
+          function(data) {
+
+              allJobOptions.xAxis.categories = data['chart_data']['name'];
+              allJobOptions.series[0].name = 'Cost $';
+              allJobOptions.series[0].data = data['chart_data']['cost'];
+              var chart = new Highcharts.Chart(allJobOptions);
+      });
+  }
+
+  loadAllJobs(jsonUrl);
+
+  });
+
+  </script>
+
+
+  {% endblock %}

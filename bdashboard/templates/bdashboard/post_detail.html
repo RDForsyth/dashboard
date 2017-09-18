@@ -1,0 +1,13 @@
+{% extends 'bdashboard/base.html' %}
+
+{% block content %}
+    <div class="post">
+        {% if job.published_date %}
+            <div class="date">
+                {{ job.published_date }}
+            </div>
+        {% endif %}
+        <h1>{{ job.title }}</h1>
+        <p>{{ job.text|linebreaksbr }}</p>
+    </div>
+{% endblock %}

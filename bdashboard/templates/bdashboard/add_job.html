@@ -1,0 +1,40 @@
+
+{% extends 'bdashboard/base.html' %}
+
+{% block content %}
+
+
+  <div id="formpanel" class=" panel-primary actions">
+      <div class="panel-heading text-center">ADD A JOB</div>
+      <div id = 'formbody' class="panel-body well">
+          <div class="row">
+              <form method="POST" class="job-form col-lg-10">{% csrf_token %}
+                 <label for="{{ form.title.id_for_label }}">Title of Job:</label>
+                  <div>
+                  {{ form.title }}
+                  </div>
+                  <label for="{{ form.department.id_for_label }}">Department:</label>
+                  <div>
+                  {{ form.department}}
+                  </div>
+                  <label for="{{ form.text.id_for_label }}">Description:</label>
+                  <div>
+                      {{ form.text }}
+                  </div>
+                  <label for="{{ form.cost.id_for_label }}">Cost ($):</label>
+                  <div>
+                      {{ form.cost }}
+                  </div>
+                  <button id="submitform" type="submit" class="save btn btn-default pull-left">Save</button>
+              </form>
+          </div>
+      </div>
+  </div>
+
+
+  <!-- <div class="ui-widget">
+    <label for="jobs">Jobs: </label>
+    <input id="jobs">
+  </div> -->
+
+{% endblock %}
