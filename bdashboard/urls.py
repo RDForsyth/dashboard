@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^api/get_chart/', views.get_chart, name='get_chart'),
     url(r'^add_job', views.add_job, name='add_job'),
     url(r'^post/(?P<pk>\d+)/edit/$', views.job_edit, name='job_edit'),
+    url(r'^post/(?P<pk>\d+)/remove/$', views.job_remove, name='job_remove'),
 
 ]

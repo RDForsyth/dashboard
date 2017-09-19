@@ -58,7 +58,7 @@ def add_job(request):
         form = JobForm(request.POST)
         if form.is_valid():
             job = form.save(commit=False)
-            job.creator = request.user
+            #job.creator = request.user
             job.published_date = timezone.now()
             job.save()
             return redirect('job_list')
@@ -72,10 +72,15 @@ def job_edit(request, pk):
         form = JobForm(request.POST, instance=job)
         if form.is_valid():
             job = form.save(commit=False)
-            job.author = request.user
+            #job.author = request.user
             job.published_date = timezone.now()
             job.save()
             return redirect('job_list')
     else:
         form = JobForm(instance=job)
     return render(request, 'bdashboard/add_job.html', {'form': form})
+
+def job_remove(request, pk):
+    job = get_object_or_404(Job, pk=pk)
+    job.delete()
+    return redirect('job_list')

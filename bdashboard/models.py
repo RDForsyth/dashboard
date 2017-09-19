@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils import timezone
-
+from django.contrib.auth.models import User
 
 class Job(models.Model):
-    creator = models.ForeignKey('auth.User')
+    creator = models.ForeignKey(User, blank = True, null = True)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(
